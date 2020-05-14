@@ -9,18 +9,17 @@ const app = express()
 ////// Middleware //////
 
 //GET /api/v1/tours 200 2.847 ms - 8565
-app.use(morgan('dev'))
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'))
+}
 // post json=> Obj
 app.use(express.json())
+// DOM http://127.0.0.1:3000/overview.html
+app.use(express.static(`${__dirname}/public`))
 
 /////////// ROUTES ///////////
 
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
 
-/////////// START SERVER ///////////
-
-const port = 3000
-app.listen(port, () => {
-  console.log(`app running on ${port}`)
-})
+module.exports = app
